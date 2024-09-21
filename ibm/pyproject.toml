@@ -6,7 +6,8 @@ authors = ["Jonathan do Ouro <jonathan.ouro@neuralmind.ai>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
+streamlit = "^1.38.0"
 
 
 [build-system]

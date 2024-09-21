@@ -1,4 +1,13 @@
 import streamlit as st
+import pandas as pd
+
+def import_products():
+    file = st.file_uploader("Upload Excel file", type=["xlsx", "csv"])
+
+    if file is not None:
+        df = pd.read_excel(file)
+        st.write(df)
+
 
 def create_seller():
     st.title("Create Seller")
@@ -10,4 +19,7 @@ def create_seller():
         "name": seller_name,
         "description": seller_description,
     }
+
+    import_products()
+
     return seller

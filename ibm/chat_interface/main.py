@@ -1,7 +1,7 @@
-from components import create_seller
+from components import company_page
 
 def main():
-    create_seller()
+    company_page()
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,24 @@
+{
+    "name": "54354",
+    "description": "3543534",
+    "products": [
+        {
+            "product": "T-shirt",
+            "description": "green t-shirt – zara outifits",
+            "stock": 90,
+            "price": 70
+        },
+        {
+            "product": "pants",
+            "description": "blue pants – zara outifits",
+            "stock": 90,
+            "price": 70
+        },
+        {
+            "product": "green packers cap",
+            "description": "green packers cap – nfl",
+            "stock": 90,
+            "price": 70
+        }
+    ]
+}

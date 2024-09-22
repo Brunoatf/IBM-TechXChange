@@ -10,7 +10,7 @@ def import_products():
 
 
 def create_seller():
-    st.title("Create Seller")
+    st.title("Create your own sales agent in 5 minutes 🚀")
 
     seller_name = st.text_input("Seller Name")
     seller_description = st.text_area("Seller Description")

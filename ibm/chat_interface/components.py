@@ -69,7 +69,7 @@ def show_products(products):
             col1, col2, col3, col4 = st.columns([2, 4, 2, 2])
 
             with col1:
-                st.image("https://via.placeholder.com/100", width=80)  # Placeholder para imagens dos produtos
+                st.image("https://picsum.photos/100/100", width=80)  # Placeholder para imagens dos produtos
                 st.subheader(product['name'])
             
             with col2:

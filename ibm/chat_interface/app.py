@@ -6,7 +6,7 @@ from components import company_page
 
 def load_cart():
     """Carrega o estado atual do carrinho de um arquivo JSON"""
-    cart_file = "ibm/chat_interface/cart.json"
+    cart_file = "cart.json"
     
     if os.path.exists(cart_file):
         with open(cart_file, "r") as f:
@@ -20,21 +20,34 @@ def show_cart():
     
     cart = load_cart()
     
-    if cart:
-        total_items = sum(item['quantity'] for item in cart.values())
-        total_price = sum(item["total_price"] for item in cart.values())
+    st.title("🛒 Your Shopping Cart")
 
-        st.write(f"Total Items: {total_items}")
-        st.write(f"Total Price: ${total_price:.2f}")
+    # Display each item in the cart
+    for item in cart:
+        # Create columns for layout (product image placeholder, name, quantity, price)
+        col1, col2, col3, col4 = st.columns([2, 4, 2, 2])
+        
+        with col1:
+            # Placeholder for product image (replace with actual image if available)
+            st.image("https://picsum.photos/100/100", width=80)
+            
+        with col2:
+            st.markdown(f"**{item['name']}**")
+            st.write(f"${item['price_per_unit']:.2f} per unit")
+        
+        with col3:
+            st.write(f"Quantity: {item['quantity']}")
+            
+        with col4:
+            st.write(f"**Total: ${item['total_price']:.2f}**")
 
-        st.write("### Cart Details")
-        for product_name, details in cart.items():
-            st.write(f"**{product_name}**")
-            st.write(f"Price: ${details['price']} - Quantity: {details['quantity']}")
-            st.divider()
+        st.markdown("---")
+    # Display cart total
+    total_amount = sum(item['total_price'] for item in cart)
 
-    else:
-        st.write("Your cart is currently empty.")
+    st.write(f"### Total Amount: **${total_amount:.2f}**")
+    if st.button("Proceed to Checkout"):
+        st.image("qr.png", caption="Scan to proceed with payment", use_column_width=True)
 
 # Set page title
 st.set_page_config(page_title="Watsell", page_icon="🛒", layout="wide")
@@ -66,53 +79,35 @@ tab1, tab2, tab3 = st.tabs(["Configurations", "Chat", "Cart"])
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
-if "chatbot" in st.session_state:
-    company = st.session_state["chatbot"].business
-    st.session_state["messages"].append(
-        {"role": "assistant", "content": "Hello, I'm Watsell, shopping assistant for {business}! How can I help you today?"}
-    )
+# if "chatbot" in st.session_state:
+#     company = st.session_state["chatbot"].business
+#     st.session_state["messages"].append(
+#         {"role": "assistant", "content": "Hello, I'm Watsell, shopping assistant for {business}! How can I help you today?"}
+#     )
 
 # Tab 1: Configurations
 with tab1:
     company_page()
 
 # Tab 2: Chat tab (left unchanged)
+
+def display():
+
+    for message in st.session_state["messages"]:
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
+
 with tab2:
-
-    def display_textual_message(message: dict) -> None:
-        """Displays textual messages in the chat window."""
-        role = message["role"]
-        content = message["content"]
-        content = content.replace("$", "\\$")
-        st.chat_message(role).write(content)
-
-    def display_messages(messages=st.session_state.get("messages", [])) -> None:
-        """Displays messages in the chat window."""
-        st.session_state["messages"] = messages
-        for msg in messages:
-            if msg["role"] in ["assistant", "user"]:
-                display_textual_message(msg)
-
-    def process_message(user_message: str) -> None:
-        """Receives user message and processes it."""
-        with st.spinner("Please wait while your message is processed..."):
-            response = st.session_state["chatbot"].get_response(user_message)
-            response_dict = {"role": "assistant", "content": response}
-            st.session_state["messages"].append(response_dict)
-
-    # Chat input at the bottom
-    user_message = st.chat_input(placeholder="Type your message here...")
-
-    display_messages()
-
-    if user_message:
-        # Append user message and display it immediately
+    if user_message := st.chat_input("Type your message here..."):
         st.session_state["messages"].append({"role": "user", "content": user_message})
-        st.chat_message("user").write(user_message)
 
-        # Process the message and get the chatbot's response
-        process_message(user_message)
-        st.rerun()
+
+        response = st.session_state["chatbot"].get_response(user_message)
+        response_dict = {"role": "assistant", "content": response}
+        st.session_state["messages"].append(response_dict)
+        
+        display()
+
 
 # Tab 3: Cart tab to show current cart status
 with tab3:

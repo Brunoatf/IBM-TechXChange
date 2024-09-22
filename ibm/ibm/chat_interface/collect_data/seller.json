@@ -1,15 +1,135 @@
 {
-    "name": "43432",
-    "description": "432",
+    "name": "teste",
+    "description": "tste",
     "products": [
         {
-            "product": "T-shirt",
-            "description": "green t-shirt \u2013 zara outifits",
+            "name": "Organic Orange Juice",
+            "description": "Freshly made local organic orange juice",
+            "stock": 100,
+            "price": 5.0
+        },
+        {
+            "name": "Whole Milk",
+            "description": "Fresh whole milk from local farms",
+            "stock": 200,
+            "price": 3.0
+        },
+        {
+            "name": "Skim Milk",
+            "description": "Low-fat skim milk",
+            "stock": 180,
+            "price": 3.0
+        },
+        {
+            "name": "AA Batteries Pack of 4",
+            "description": "Long-lasting AA batteries (pack of 4)",
+            "stock": 150,
+            "price": 6.0
+        },
+        {
+            "name": "AAA Batteries Pack of 6",
+            "description": "High-energy AAA batteries (pack of 6)",
+            "stock": 100,
+            "price": 7.0
+        },
+        {
+            "name": "Free-range Eggs Dozen Pack",
+            "description": "Dozen pack of free-range eggs",
+            "stock": 120,
+            "price": 4.0
+        },
+        {
+            "name": "Bread Loaf",
+            "description": "Freshly baked whole grain bread loaf",
+            "stock": 50,
+            "price": 2.5
+        },
+        {
+            "name": "Peanut Butter",
+            "description": "Organic creamy peanut butter",
+            "stock": 75,
+            "price": 4.5
+        },
+        {
+            "name": "Shampoo 500ml",
+            "description": "Nourishing shampoo for all hair types",
+            "stock": 60,
+            "price": 8.0
+        },
+        {
+            "name": "Toothpaste 150g",
+            "description": "Whitening toothpaste with fluoride",
             "stock": 90,
-            "price": 70
+            "price": 3.5
+        },
+        {
+            "name": "Chocolate Bar 100g",
+            "description": "Premium dark chocolate bar",
+            "stock": 200,
+            "price": 2.5
+        },
+        {
+            "name": "Instant Noodles",
+            "description": "Quick and easy instant noodles (pack of 5)",
+            "stock": 250,
+            "price": 3.0
+        },
+        {
+            "name": "Cola Soda 1.5L",
+            "description": "Refreshing cola soda in a 1.5L bottle",
+            "stock": 150,
+            "price": 2.0
+        },
+        {
+            "name": "Chips Family Size",
+            "description": "Crunchy salted potato chips family-size pack",
+            "stock": 130,
+            "price": 3.0
+        },
+        {
+            "name": "Dish Soap 500ml",
+            "description": "Lemon-scented dishwashing liquid",
+            "stock": 85,
+            "price": 3.0
+        },
+        {
+            "name": "Hand Sanitizer 300ml",
+            "description": "Alcohol-based hand sanitizer",
+            "stock": 100,
+            "price": 5.0
+        },
+        {
+            "name": "Coffee Beans 1kg",
+            "description": "Premium whole coffee beans",
+            "stock": 75,
+            "price": 15.0
+        },
+        {
+            "name": "Mineral Water 500ml",
+            "description": "Refreshing natural mineral water",
+            "stock": 180,
+            "price": 1.5
+        },
+        {
+            "name": "Laundry Detergent 1kg",
+            "description": "Powerful stain-removing detergent",
+            "stock": 70,
+            "price": 7.0
+        },
+        {
+            "name": "Merlot 750ml",
+            "description": "Soft and smooth red wine",
+            "stock": 45,
+            "price": 19.0
+        },
+        {
+            "name": "Pinot Noir 750ml",
+            "description": "Light-bodied red wine with elegant flavors",
+            "stock": 35,
+            "price": 22.0
         }
     ],
     "ai_model": "mistralai/mistral-large",
-    "ibm_api_key": "23423",
-    "ibm_project_id": "423"
+    "ibm_api_key": "80Gir67mGt8oEDPWD5zKcyGYJpmZLMkzBl-_5JjT1Op6",
+    "ibm_project_id": "55324856-0806-4a2e-8d76-199601596561"
 }

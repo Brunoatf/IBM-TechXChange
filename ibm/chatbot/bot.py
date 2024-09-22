@@ -25,7 +25,7 @@ class Chatbot:
         self.business = business
         self.business_description = business_description
         self.catalog_db = CatalogDatabase(products)
-        self.cart_db = CartDatabase()
+        self.cart_db = CartDatabase(self.catalog_db)
         self.llm = LLM(ibm_api_key, ibm_project_id, model_id)
         self.history_limit = history_limit  # Maximum number of turns to keep in history
         self.conversation_history = deque(maxlen=history_limit * 2)  # Each turn has user and bot message
@@ -45,37 +45,37 @@ class Chatbot:
     def update_cart(self, action_input: str) -> str:
         # Parse the action input to handle multiple 'Add' or 'Remove' operations
         action_input = action_input.strip('"').strip()
-    
+
         # Initialize the messages list to store the results
         messages = []
-    
+
         # Split the action input into multiple operation segments (e.g., 'add', 'remove')
         operations = re.split(r'(?i)(?=\badd\b|\bremove\b)', action_input)
-    
+
         for operation in operations:
             operation = operation.strip()
             if not operation:
                 continue  # Skip empty operations
-            
+
             try:
                 # Identify the operation type and the product string
                 op_type, products_str = operation.split(' ', 1)
                 op_type = op_type.lower()  # Convert operation to lowercase to handle case-insensitivity
-    
+
                 if op_type not in ["add", "remove"]:
                     messages.append(f"Invalid cart operation: '{op_type}'. Use 'Add' or 'Remove'.")
                     continue
-                
+
                 # Split the products string by commas to get individual product entries
                 product_entries = [p.strip() for p in products_str.split(',') if p.strip()]  # Remove empty strings
-    
+
                 for entry in product_entries:
                     # Expecting format: quantity x product_name
                     try:
                         quantity_part, product_name = entry.split(' x ', 1)
                         quantity = int(quantity_part.strip())
                         product_name = product_name.strip()
-    
+
                         if op_type == "add":
                             result = self.cart_db.add_product(product_name, quantity)
                         elif op_type == "remove":
@@ -83,12 +83,12 @@ class Chatbot:
                         messages.append(f"{op_type.capitalize()} {quantity} x {product_name}: {result}")
                     except ValueError:
                         messages.append(f"Invalid format for entry: '{entry}'. Expected 'quantity x product_name'.")
-    
+
             except ValueError:
                 messages.append(f"Invalid cart input format for operation: '{operation}'. Please specify the operation and products.")
-    
+
         return "\n".join(messages)
-    
+
 
 
     def finalize_order(self) -> str:

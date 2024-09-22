@@ -66,6 +66,12 @@ tab1, tab2, tab3 = st.tabs(["Configurations", "Chat", "Cart"])
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
+if "chatbot" in st.session_state:
+    company = st.session_state["chatbot"].business
+    st.session_state["messages"].append(
+        {"role": "assistant", "content": "Hello, I'm Watsell, shopping assistant for {business}! How can I help you today?"}
+    )
+
 # Tab 1: Configurations
 with tab1:
     company_page()
@@ -77,6 +83,7 @@ with tab2:
         """Displays textual messages in the chat window."""
         role = message["role"]
         content = message["content"]
+        content = content.replace("$", "\\$")
         st.chat_message(role).write(content)
 
     def display_messages(messages=st.session_state.get("messages", [])) -> None:
@@ -96,13 +103,16 @@ with tab2:
     # Chat input at the bottom
     user_message = st.chat_input(placeholder="Type your message here...")
 
+    display_messages()
+
     if user_message:
         # Append user message and display it immediately
         st.session_state["messages"].append({"role": "user", "content": user_message})
+        st.chat_message("user").write(user_message)
 
         # Process the message and get the chatbot's response
         process_message(user_message)
-        display_messages()
+        st.rerun()
 
 # Tab 3: Cart tab to show current cart status
 with tab3:

@@ -70,7 +70,7 @@ def show_products(products):
 
             with col1:
                 st.image("https://via.placeholder.com/100", width=80)  # Placeholder para imagens dos produtos
-                st.subheader(product['product'])
+                st.subheader(product['name'])
             
             with col2:
                 st.write(product['description'])
@@ -125,4 +125,11 @@ def company_page():
             ibm_api_key=seller["ibm_api_key"],
             ibm_project_id=seller["ibm_project_id"],
             model_id=seller["ai_model"]
+        )
+
+        if "messages" not in st.session_state:
+            st.session_state["messages"] = []
+        name = seller["name"]
+        st.session_state["messages"].append(
+            {"role": "assistant", "content": f"Hello, I'm Watsell, shopping assistant for {name}! How can I help you today?"}
         )

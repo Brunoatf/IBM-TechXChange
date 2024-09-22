@@ -153,7 +153,7 @@ Conversation History (you may use this to keep track of the conversation):
 
 User Message: {user_message}"""
 
-search_prompt = """Your goal is to simply look in a catalog and return products from it related to what the user is searching. Based on the product catalog above, list the matching products in a concise manner. If there are no matching products, return "No products found." By no means should you recommend products based on your internal knowledge — only use the provided catalog.
+search_prompt = """Your goal is to simply look in a catalog and return products from it related to what the user is searching. Based on the product catalog above, list the matching products in a concise manner. If there are no matching products, return "No products found." By no means should you recommend products based on your internal knowledge — only use the provided catalog. For each returned product, include both the product name and price.
 
 Catalog:
 

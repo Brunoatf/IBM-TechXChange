@@ -1,11 +1,40 @@
-import streamlit as st
-import sys
+import json
 import os
+import streamlit as st
+import pandas as pd
+from components import company_page
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+def load_cart():
+    """Carrega o estado atual do carrinho de um arquivo JSON"""
+    cart_file = "ibm/chat_interface/cart.json"
+    
+    if os.path.exists(cart_file):
+        with open(cart_file, "r") as f:
+            return json.load(f)
+    else:
+        return {}
 
-from chatbot.bot import Chatbot
-from components import create_seller
+def show_cart():
+    """Exibe o estado atual do carrinho"""
+    st.title("Current Cart Status")
+    
+    cart = load_cart()
+    
+    if cart:
+        total_items = sum(item['quantity'] for item in cart.values())
+        total_price = sum(item['price'] * item['quantity'] for item in cart.values())
+
+        st.write(f"Total Items: {total_items}")
+        st.write(f"Total Price: ${total_price:.2f}")
+
+        st.write("### Cart Details")
+        for product_name, details in cart.items():
+            st.write(f"**{product_name}**")
+            st.write(f"Price: ${details['price']} - Quantity: {details['quantity']}")
+            st.divider()
+
+    else:
+        st.write("Your cart is currently empty.")
 
 # Set page title
 st.set_page_config(page_title="Watsell", page_icon="🛒", layout="wide")
@@ -16,48 +45,33 @@ hide_default_format = """
        #MainMenu {visibility: hidden; }
        footer {visibility: hidden;}
        .block-container {
-           padding-left: 10 !important;
-           padding-right: 10 !important;
-           max-width: 100% !important;
-
+           padding-left: 10px !important;
+           padding-right: 10px !important;
+           max-width: 95% !important;
        }
        </style>
        """
 st.markdown(hide_default_format, unsafe_allow_html=True)
 
-# Initialize session state for messages and conversation ID if not present
-if "messages" not in st.session_state:
-    st.session_state["messages"] = []
-if "chatbot" not in st.session_state:
-    st.session_state["chatbot"] = Chatbot(
-        business="Foo",
-        business_description="A fictional convenience store",
-        products=[
-            {"name": "Apple", "price": 1.0},
-            {"name": "Banana", "price": 0.5},
-            {"name": "Orange", "price": 0.75},
-        ],
-    )
-
-
 st.markdown("""
     <div style="text-align: center;">
-        <h1 style="font-size: 3em; color: #2c5ad4;">Hello, I'm Watsell  💬</h1>
+        <h1 style="font-size: 3em; color: #2c5ad4;">Hello, I'm Watsell! 💬</h1>
         <p style="font-size: 1.5em; color: #555;">The customizable sales agent for your business</p>
     </div>
     """, unsafe_allow_html=True)
 
-st.write("Welcome to Watsell! Use the chat interface to interact with the virtual sales assistant.")
+# Add tabs for Configurations, Chat, and Cart
+tab1, tab2, tab3 = st.tabs(["Configurations", "Chat", "Cart"])
 
-# Add tabs
-tab1, tab2 = st.tabs(["Chat", "Configurations"])
+if "messages" not in st.session_state:
+    st.session_state["messages"] = []
 
-# Chat tab
+# Tab 1: Configurations
 with tab1:
+    company_page()
 
-    def process_reset_button_click() -> None:
-        """Resets the chatbot conversation."""
-        st.session_state.pop("messages", None)
+# Tab 2: Chat tab (left unchanged)
+with tab2:
 
     def display_textual_message(message: dict) -> None:
         """Displays textual messages in the chat window."""
@@ -78,18 +92,20 @@ with tab1:
             response_dict = {"role": "assistant", "content": response}
             st.session_state["messages"].append(response_dict)
 
+    # Display existing messages at the top
     display_messages()
 
-    if user_message := st.chat_input(placeholder="Type your message here..."):
+    # Chat input at the bottom
+    user_message = st.chat_input(placeholder="Type your message here...")
+
+    if user_message:
+        # Append user message and display it immediately
         st.session_state["messages"].append({"role": "user", "content": user_message})
         st.chat_message("user").write(user_message)
+
+        # Process the message and get the chatbot's response
         process_message(user_message)
 
-        # Rerun the app to display the messages and update the UI dynamically
-        st.rerun()
-
-# Other component tab (e.g., settings or information tab)
-with tab2:
-    st.header("Other Component")
-    st.write("This tab can be used for other functionalities, like settings or information.")
-    create_seller()
+# Tab 3: Cart tab to show current cart status
+with tab3:
+    show_cart()

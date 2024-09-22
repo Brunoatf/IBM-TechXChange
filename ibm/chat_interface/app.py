@@ -95,7 +95,7 @@ def display():
 
     for message in st.session_state["messages"]:
         with st.chat_message(message["role"]):
-            st.write(message["content"])
+            st.write(message["content"].replace("$", "\\$"))
 
 with tab2:
     if user_message := st.chat_input("Type your message here..."):
@@ -105,7 +105,7 @@ with tab2:
         response = st.session_state["chatbot"].get_response(user_message)
         response_dict = {"role": "assistant", "content": response}
         st.session_state["messages"].append(response_dict)
-        
+
         display()
 
 

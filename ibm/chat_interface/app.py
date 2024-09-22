@@ -22,7 +22,7 @@ def show_cart():
     
     if cart:
         total_items = sum(item['quantity'] for item in cart.values())
-        total_price = sum(item['price'] * item['quantity'] for item in cart.values())
+        total_price = sum(item["total_price"] for item in cart.values())
 
         st.write(f"Total Items: {total_items}")
         st.write(f"Total Price: ${total_price:.2f}")

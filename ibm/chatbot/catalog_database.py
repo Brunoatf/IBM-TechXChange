@@ -11,3 +11,10 @@ class CatalogDatabase:
 
     def get_product_list(self):
         return [product['name'] for product in self.products]
+    
+    def get_product_by_name(self, product_name):
+        # Fetch product details by name
+        for product in self.products:
+            if product['name'].lower() == product_name.lower():
+                return product
+        return None

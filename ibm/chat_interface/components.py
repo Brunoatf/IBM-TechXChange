@@ -3,6 +3,12 @@ import os
 import streamlit as st
 import pandas as pd
 
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from chatbot.bot import Chatbot
+
 def import_products():
     """Função para importar catálogo de produtos"""
     file = st.file_uploader("Upload your product catalog here", type=["csv"])
@@ -28,7 +34,7 @@ def create_seller():
     products = import_products()
 
     # Dropdown para selecionar modelo de IA
-    model_choices = ["granite-34b-code-instruct", "mistral-large", "llama-3-405b-instruct"]
+    model_choices = ["mistralai/mistral-large", "llama-3-405b-instruct"]
     selected_model = st.selectbox("Select your AI model", model_choices)
 
     # Campos de senha para IBM API Key e IBM Project ID
@@ -111,3 +117,12 @@ def company_page():
     if seller:
         save_seller(seller)
         st.write("## Seller saved successfully.")
+
+        st.session_state["chatbot"] = Chatbot(
+            business=seller["name"],
+            business_description=seller["description"],
+            products=seller["products"],
+            ibm_api_key=seller["ibm_api_key"],
+            ibm_project_id=seller["ibm_project_id"],
+            model_id=seller["ai_model"]
+        )

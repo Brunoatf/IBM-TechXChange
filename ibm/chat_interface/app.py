@@ -81,6 +81,7 @@ with tab2:
 
     def display_messages(messages=st.session_state.get("messages", [])) -> None:
         """Displays messages in the chat window."""
+        st.session_state["messages"] = messages
         for msg in messages:
             if msg["role"] in ["assistant", "user"]:
                 display_textual_message(msg)
@@ -92,19 +93,16 @@ with tab2:
             response_dict = {"role": "assistant", "content": response}
             st.session_state["messages"].append(response_dict)
 
-    # Display existing messages at the top
-    display_messages()
-
     # Chat input at the bottom
     user_message = st.chat_input(placeholder="Type your message here...")
 
     if user_message:
         # Append user message and display it immediately
         st.session_state["messages"].append({"role": "user", "content": user_message})
-        st.chat_message("user").write(user_message)
 
         # Process the message and get the chatbot's response
         process_message(user_message)
+        display_messages()
 
 # Tab 3: Cart tab to show current cart status
 with tab3:

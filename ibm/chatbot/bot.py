@@ -8,15 +8,21 @@ from chatbot.prompts import react_prompt, search_prompt
 from chatbot.cart_database import CartDatabase
 from chatbot.catalog_database import CatalogDatabase
 
-settings = Settings()
 class Chatbot:
-
-    def __init__(self, business: str, business_description: str, products: list[dict], history_limit=3):
+    def __init__(self, 
+            business: str, 
+            business_description: str, 
+            products: list[dict],
+            ibm_api_key: str,
+            ibm_project_id: str,
+            model_id: str = "mistralai/mistral-large",
+            history_limit=3
+        ):
         self.business = business
         self.business_description = business_description
         self.catalog_db = CatalogDatabase(products)
         self.cart_db = CartDatabase()
-        self.llm = LLM(settings.ibm_api_key, settings.ibm_project_id)
+        self.llm = LLM(ibm_api_key, ibm_project_id, model_id)
         self.history_limit = history_limit  # Maximum number of turns to keep in history
         self.conversation_history = deque(maxlen=history_limit * 2)  # Each turn has user and bot message
 

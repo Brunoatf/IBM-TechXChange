@@ -1,10 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8"
-    )
+    ibm_api_key: str
+    ibm_project_id: str
 
-    watson_assistant_api_key: str = ""
-    watson_assistant_url: str = ""
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
